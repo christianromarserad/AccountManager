@@ -5,32 +5,34 @@
  */
 package accountmanager;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 /**
  *
- * @author chris
+ * @author Christian Serad
  */
 public class AccountManager extends Application {
+    private AccountManagerController controller;
     
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException{
         WebView browser = FXMLLoader.load(getClass().getResource("Layout.fxml"));
         WebEngine webEngine = browser.getEngine();
         URL urlHello = getClass().getResource("/resources/index.html");
         webEngine.load(urlHello.toExternalForm());
+        
+        
+        controller = new AccountManagerController();
+        JSObject window = (JSObject) webEngine.executeScript("window");
+        window.setMember("accountController", controller);
         
         Scene scene = new Scene(browser, 1000, 500);
         
