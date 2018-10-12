@@ -27,6 +27,31 @@ public class AccountManagerController {
         return allAccounts;
     }
     
+    public String getAccountDetailsViewModel(String categoryName, String accountTypeName, String userName) throws FileNotFoundException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        ArrayList<Account> accountDetailsModels = new ArrayList<Account>();
+        
+        for(AccountCategory accountCategory : allAccounts){
+            if(accountCategory.getCategory().equals(categoryName) || categoryName == null){
+                
+                for(AccountType accountType : accountCategory.getAccountTypes()){
+                    if(accountType.getAccountType().equals(accountTypeName) || accountTypeName == null){
+                        
+                        for(Account account : accountType.getAccounts()){
+                            if(account.getUserName().equals(userName)){
+                                accountDetailsModels.add(account);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        String accountDetailsViewModelJson = gson.toJson(accountDetailsModels);
+        return accountDetailsViewModelJson;
+    }
+    
     public String getAccountViewModel(String categoryName, String accountTypeName) throws FileNotFoundException{
         List<AccountCategory> allAccounts = getAccounts();
         Gson gson = new Gson();
@@ -50,8 +75,8 @@ public class AccountManagerController {
             }
         }
         
-        String categoryViewModelJson = gson.toJson(accountViewModels);
-        return categoryViewModelJson;
+        String accountsViewModelJson = gson.toJson(accountViewModels);
+        return accountsViewModelJson;
     }
     
     public String getAccountTypeViewModel(String categoryName) throws FileNotFoundException{
@@ -71,8 +96,8 @@ public class AccountManagerController {
             }
         }
         
-        String categoryViewModelJson = gson.toJson(accountTypeViewModels);
-        return categoryViewModelJson;
+        String accountTypesViewModelJson = gson.toJson(accountTypeViewModels);
+        return accountTypesViewModelJson;
     }
     
     public String getCategoryViewModel() throws FileNotFoundException{
@@ -86,7 +111,7 @@ public class AccountManagerController {
             categoryViewModels.add(categoryViewModel);
         }
         
-        String categoryViewModelJson = gson.toJson(categoryViewModels);
-        return categoryViewModelJson;
+        String categoriesViewModelJson = gson.toJson(categoryViewModels);
+        return categoriesViewModelJson;
     }
 }
