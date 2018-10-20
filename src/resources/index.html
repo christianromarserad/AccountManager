@@ -1,65 +1,176 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="scripts/jQuery.js"></script>
+        <script src="scripts/mustache.min.js"></script>
         <script src="scripts/js/bootstrap.js"></script>
-         <link rel="stylesheet" href="scripts/css/bootstrap.css">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
+        <link rel="stylesheet" href="scripts/css/bootstrap.css">
+        <style>
+            a:hover { 
+                background-color: black; 
+            }
+            .btn-circle {
+                width: 30px;
+                height: 30px;
+                text-align: center;
+                padding: 6px 0;
+                font-size: 12px;
+                line-height: 1.428571429;
+                border-radius: 15px;
+                border-style: solid;
+                border-color: gray;
+                border-width: 1px;
+            }
+        </style>
+        <script>
+            $(document).ready(function(){
+                //Load the category view first
+                var accountsJSON = JSON.parse(accountController.getCategoryViewModel());
+                $("#display").load("categories.html", function(){
+                    var template = $("template").html();
+                    var divRow = "<div class='row'>";
+                    var columns = 0;
+                    accountsJSON.forEach(function(data){
+                        columns += 4;
+                        var button = Mustache.render(template, data);
+                        divRow += "<div class='col-sm-4'>" + button + "</div>"
+                        
+                        if(columns == 12){
+                            $("#buttonDisplay").append(divRow + "</div>");
+                            divRow = "<div class='row'>";
+                            columns = 0;
+                        }
+                    });
+                     $("#buttonDisplay").append(divRow + "</div>");
+                    deleteAndEditIcons();
+                    
+                    //Edit modal for the category view
+                    $('#editModal').on('show.bs.modal', function(event){
+                        var button = $(event.relatedTarget) // Button that triggered the modal
+                        var category = button.data('category') // Extract info from data-* attributes
+                        var modal = $(this)
+                        modal.find('.modal-title').text('Edit ' + category + ' category')
+                        modal.find('.modal-body input').val(category)
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-              </ul>
+                        //Do a submit event
+                        $("#editCategorySubmitButton").click(function(){
+                            var success = accountController.editCategory(button.data('category'), modal.find('.modal-body input').val())
+                            if(success){
+                                //Rerender the category button with its new category name
+                                button.data('category',modal.find('.modal-body input').val())
+                                button.parent().parent().find('.card-header').data('category',modal.find('.modal-body input').val());
+                                button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
+                            }
+                        });
+                    });
+                });
+                
+                //Load account type view when category is clicked
+                $('#display').on('click', '.category-button', function() {
+                    var accountsJSON = JSON.parse(accountController.getAccountTypeViewModel($(this).data("category")));
+                    $("#display").load("accountTypes.html", function(){
+                        var template = $("template").html();
+                        var divRow = "<div class='row'>";
+                        var columns = 0;
+                        $.each(accountsJSON, function(key, value){
+                            columns += 4;
+                            var button = Mustache.render(template, value);
+                            divRow += "<div class='col-sm-4'>" + button + "</div>"
+                            
+                            if(columns == 12){
+                                $("#buttonDisplay").append(divRow + "</div>");
+                                divRow = "<div class='row'>";
+                                columns = 0;
+                            }
+                        });
+                        $("#buttonDisplay").append(divRow + "</div>");
+                        deleteAndEditIcons();
+                        
+                        //Edit modal for the category view
+                        $('#editModal').on('show.bs.modal', function(event){
+                            var button = $(event.relatedTarget) // Button that triggered the modal
+                            var accountType = button.data('accounttype') // Extract info from data-* attributes
+                            var modal = $(this)
+                            modal.find('.modal-title').text('Edit ' + accountType + ' account type')
+                            modal.find('.modal-body input').val(accountType)
+
+                            //Do a submit event
+                            $("#editAccountTypeSubmitButton").click(function(){
+                                var success = accountController.editAccountType(button.data('category'), button.data('accounttype'), modal.find('.modal-body input').val())
+                                if(success){
+                                    //Rerender the category button with its new category name
+                                    button.data('accounttype',modal.find('.modal-body input').val())
+                                    button.parent().parent().find('.card-header').data('accounttype',modal.find('.modal-body input').val());
+                                    button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
+                                }
+                            });
+                        });
+                    });
+                });
+                
+                //Load accounts when account types is clicked
+                $('#display').on('click', '.account-type-button', function() {
+                    var accountsJSON = JSON.parse(accountController.getAccountViewModel($(this).data("category"),$(this).data("accounttype")));     
+                    $("#display").load("accounts.html", function(){
+                        var template = $("template").html();
+                        $.each(accountsJSON, function(key, value){
+                            var templateComplete = Mustache.render(template, value);
+                            $("#buttonDisplay").append(templateComplete);
+                        });
+                    });
+                });
+                
+                //Display the account details view when an account is clicked
+                $('#display').on('click', '.user-name-button', function() {
+                    var accountsJSON = JSON.parse(accountController.getAccountDetailsViewModel($(this).data("category"), $(this).data("accounttype"), $(this).data("username")));     
+                    $("#display").load("accountDetails.html", function(){
+                        var template = $("template").html();
+                        $.each(accountsJSON, function(index, element){
+                            $.each(element, function(key, value){
+                                var templateComplete = Mustache.render(template, {value:value, key:key});
+                                $("#buttonDisplay").append(templateComplete);
+                            });
+                        });
+                        deleteAndEditIcons();
+                    });
+                });
+                
+                
+                
+                
+                
+                
+                // Delete and Edit button
+                function deleteAndEditIcons(){
+                    $(".delete-icon").html("<img class='img-fluid' src='scripts/delete.png'>");
+                
+                    $(".delete-icon").hover(function(){
+                        $(this).html("<img class='img-fluid' src='scripts/deletewhite.png'>");
+                    },function(){
+                        $(this).html("<img class='img-fluid' src='scripts/delete.png'>");
+                    });
+                }
+             });
+        </script>
+    </head>
+    <body>   
+        <!--
+            <div class="row">
+                <div class="card">
+                                 <div class="card-header d-flex flex-row justify-content-center" style="width:20rem;height:15rem">
+                        <h1 class="align-self-center">Download</h1>
+                    </div>
+                    <div class="card-body d-flex flex-row justify-content-center" style="height:4rem">
+                        <a style="height:2rem;width:2rem" class="btn-circle d-flex flex-row justify-content-center" href="#"><img class="delete-icon img-fluid" src=""></a>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <form>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        -->
+        <button id="click">click</button>    
+        <div id="display"></div>
+        <div id="debug"></div>
     </body>
 </html>
