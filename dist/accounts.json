@@ -1,1 +1,135 @@
-[{"category":"Email","accountTypes":[{"accountType":"Google","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@gmail.com"}}]},{"accountType":"Yahoo","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@yahoo.com"}}]},{"accountType":"Outlook","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@outlook.com"}}]}]},{"category":"Social","accountTypes":[{"accountType":"Facebook","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@gmail.com"}}]}]},{"category":"Shopping","accountTypes":[{"accountType":"Amazon","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@gmail.com"}}]}]},{"category":"School","accountTypes":[{"accountType":"Highschool","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@gmail.com"}}]}]},{"category":"Other","accountTypes":[{"accountType":"Quora","accounts":[{"accountDetails":{"password":"password","userName":"christianserad@gmail.com"}}]}]}]
+[
+  {
+    "category": "Email",
+    "accountTypes": [
+      {
+        "accountType": "Google",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@gmail.com",
+              "password": "password",
+              "security question answer": "answer",
+              "security question answer2": "secret answer",
+              "random": "information"
+            }
+          },
+          {
+            "accountDetails": {
+              "userName": "romarserad@gmail.com",
+              "password": "password"
+            }
+          }
+        ]
+      },
+      {
+        "accountType": "Yahoo",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@yahoo.com",
+              "password": "password"
+            }
+          }
+        ]
+      },
+      {
+        "accountType": "Outlook",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@outlook.com",
+              "password": "password"
+            }
+          }
+        ]
+      },
+      {
+        "accountType": "CustomEmail",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@customemail.com",
+              "password": "password"
+            }
+          }
+        ]
+      },
+      {
+        "accountType": "AOL",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@aol.com",
+              "password": "password"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Social",
+    "accountTypes": [
+      {
+        "accountType": "Facebook",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@gmail.com",
+              "password": "password"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Shopping",
+    "accountTypes": [
+      {
+        "accountType": "Amazon",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@gmail.com",
+              "password": "password"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "School",
+    "accountTypes": [
+      {
+        "accountType": "Highschool",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@gmail.com",
+              "password": "password"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Other",
+    "accountTypes": [
+      {
+        "accountType": "Quora",
+        "accounts": [
+          {
+            "accountDetails": {
+              "userName": "christianserad@gmail.com",
+              "password": "password"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

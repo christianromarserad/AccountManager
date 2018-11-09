@@ -134,6 +134,12 @@
                         });
                         deleteAndEditIcons();
                         
+                        //Delete event
+                        $(".deleteAccountDetailButton").click(function(){
+                            accountController.deleteAccountDetail($(this).data("category"), $(this).data("accounttype"), $(this).data("username"), $(this).data("field"));
+                            $(this).parent().parent().remove();
+                        });
+                        
                         //Edit modal for the category view
                         $('#editModal').on('show.bs.modal', function(event){
                             var button = $(event.relatedTarget) // Button that triggered the modal

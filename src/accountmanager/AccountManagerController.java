@@ -214,7 +214,7 @@ public class AccountManagerController {
         //Not fully implemented
     }
     
-        public void deleteAccountType(String categoryName, String accountTypeName) throws URISyntaxException, FileNotFoundException, IOException{
+    public void deleteAccountType(String categoryName, String accountTypeName) throws URISyntaxException, FileNotFoundException, IOException{
         List<AccountCategory> allAccounts = getAccounts();
         Gson gson = new Gson();
         
@@ -224,6 +224,32 @@ public class AccountManagerController {
                     if(category.getAccountTypes().get(i).getAccountType().equals(accountTypeName)){
                         category.getAccountTypes().remove(i);
                         break;
+                    }
+                }
+            }
+        }
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        //Not fully implemented
+    }
+    
+    public void deleteAccountDetail(String categoryName, String accountTypeName, String username, String field) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category: allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                for(AccountType accountType: category.getAccountTypes()){
+                    if(accountType.getAccountType().equals(accountTypeName)){
+                        for(Account account: accountType.getAccounts()){
+                            if(account.get("userName").equals(username)){
+                                account.remove(field);
+                                break;
+                            }
+                        }
                     }
                 }
             }

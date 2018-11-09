@@ -16,4 +16,8 @@ public class Account {
     public void set(String field, String value){
         accountDetails.put(field,value);
     }
+    
+    public void remove(String field){
+        accountDetails.remove(field);
+    }
 }
