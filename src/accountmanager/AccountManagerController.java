@@ -2,19 +2,18 @@ package accountmanager;
 
 import accountmodels.Account;
 import accountmodels.AccountCategory;
+import accountmodels.AccountDetailViewModel;
 import accountmodels.AccountType;
 import accountmodels.AccountTypeViewModel;
 import accountmodels.AccountViewModel;
 import accountmodels.CategoryViewModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -38,7 +37,7 @@ public class AccountManagerController {
     public String getAccountDetailsViewModel(String categoryName, String accountTypeName, String userName) throws FileNotFoundException, URISyntaxException{
         List<AccountCategory> allAccounts = getAccounts();
         Gson gson = new Gson();
-        ArrayList<Account> accountDetailsModels = new ArrayList<Account>();
+        ArrayList<AccountDetailViewModel> accountDetailsViewModels = new ArrayList<AccountDetailViewModel>();
         
         for(AccountCategory accountCategory : allAccounts){
             if(accountCategory.getCategory().equals(categoryName)){
@@ -47,8 +46,12 @@ public class AccountManagerController {
                     if(accountType.getAccountType().equals(accountTypeName)){
                         
                         for(Account account : accountType.getAccounts()){
-                            if(account.getUserName().equals(userName)){
-                                accountDetailsModels.add(account);
+                            if(account.get("userName").equals(userName)){
+                                AccountDetailViewModel accountDetailViewModel = new AccountDetailViewModel();
+                                accountDetailViewModel.setCategory(categoryName);
+                                accountDetailViewModel.setAccountType(accountTypeName);
+                                accountDetailViewModel.setAccount(account);
+                                accountDetailsViewModels.add(accountDetailViewModel);
                             }
                         }
                     }
@@ -56,7 +59,7 @@ public class AccountManagerController {
             }
         }
         
-        String accountDetailsViewModelJson = gson.toJson(accountDetailsModels);
+        String accountDetailsViewModelJson = gson.toJson(accountDetailsViewModels);
         return accountDetailsViewModelJson;
     }
     
@@ -75,7 +78,7 @@ public class AccountManagerController {
                             AccountViewModel accountViewModel = new AccountViewModel();
                             accountViewModel.setAccountType(accountType.getAccountType());
                             accountViewModel.setCategory(accountCategory.getCategory());
-                            accountViewModel.setUserName(account.getUserName());
+                            accountViewModel.setUserName(account.get("userName"));
                             accountViewModels.add(accountViewModel);
                         }
                     }
@@ -130,13 +133,13 @@ public class AccountManagerController {
         for(AccountCategory category : allAccounts){
             if(category.getCategory().equals(oldCategoryName)){
                 category.setCategory(newCategoryName);
+                System.out.println("oh hey!");
             }
         }
 
         FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
         gson.toJson(allAccounts, writer);
         writer.close();
-        
         return true;
         
         //Not fully implemented
@@ -161,6 +164,74 @@ public class AccountManagerController {
         writer.close();
         
         return true;
+        
+        //Not fully implemented
+    }
+    
+    public boolean editAccount(String categoryName, String accountTypeName, String username, String field, String oldFieldValue, String newFieldValue) throws FileNotFoundException, URISyntaxException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category : allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                for(AccountType accountType : category.getAccountTypes()){
+                    if(accountType.getAccountType().equals(accountTypeName)){
+                        for(Account account : accountType.getAccounts()){
+                            if(account.get("userName").equals(username)){
+                                account.set(field, newFieldValue);
+                                System.out.println(newFieldValue);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        return true;
+        
+        //Not fully implemented
+    }
+    
+    public void deleteCategory(String categoryName) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(int i = 0; i < allAccounts.size(); i++){
+            if(allAccounts.get(i).getCategory().equals(categoryName)){
+                allAccounts.remove(i);
+                break;
+            }
+        }
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        //Not fully implemented
+    }
+    
+        public void deleteAccountType(String categoryName, String accountTypeName) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category: allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                for(int i = 0; i < category.getAccountTypes().size(); i++){
+                    if(category.getAccountTypes().get(i).equals(accountTypeName)){
+                        category.getAccountTypes().remove(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
         
         //Not fully implemented
     }

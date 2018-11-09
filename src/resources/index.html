@@ -31,27 +31,25 @@
                 var accountsJSON = JSON.parse(accountController.getCategoryViewModel());
                 $("#display").load("categories.html", function(){
                     var template = $("template").html();
-                    var divRow = "<div class='row'>";
-                    var columns = 0;
                     accountsJSON.forEach(function(data){
-                        columns += 4;
                         var button = Mustache.render(template, data);
-                        divRow += "<div class='col-sm-4'>" + button + "</div>"
-                        
-                        if(columns == 12){
-                            $("#buttonDisplay").append(divRow + "</div>");
-                            divRow = "<div class='row'>";
-                            columns = 0;
-                        }
+                        var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
+                        $("#buttonDisplay").append(buttonContainer);
                     });
-                     $("#buttonDisplay").append(divRow + "</div>");
+                    
                     deleteAndEditIcons();
                     
+                    //Delete event
+                    $(".deleteCategoryButton").click(function(){
+                        accountController.deleteCategory($(this).data("category"));
+                        $(this).parent().parent().parent().remove();
+                    });
+                    
                     //Edit modal for the category view
-                    $('#editModal').on('show.bs.modal', function(event){
+                    $('#editModal').on('show.bs.modal', function(event){                    
                         var button = $(event.relatedTarget) // Button that triggered the modal
                         var category = button.data('category') // Extract info from data-* attributes
-                        var modal = $(this)
+                        var modal = $("#editModal");
                         modal.find('.modal-title').text('Edit ' + category + ' category')
                         modal.find('.modal-body input').val(category)
 
@@ -64,6 +62,7 @@
                                 button.parent().parent().find('.card-header').data('category',modal.find('.modal-body input').val());
                                 button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
                             }
+                            $("#editCategorySubmitButton").off( 'click' );
                         });
                     });
                 });
@@ -73,20 +72,12 @@
                     var accountsJSON = JSON.parse(accountController.getAccountTypeViewModel($(this).data("category")));
                     $("#display").load("accountTypes.html", function(){
                         var template = $("template").html();
-                        var divRow = "<div class='row'>";
-                        var columns = 0;
                         $.each(accountsJSON, function(key, value){
-                            columns += 4;
                             var button = Mustache.render(template, value);
-                            divRow += "<div class='col-sm-4'>" + button + "</div>"
-                            
-                            if(columns == 12){
-                                $("#buttonDisplay").append(divRow + "</div>");
-                                divRow = "<div class='row'>";
-                                columns = 0;
-                            }
+                            var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
+                            $("#buttonDisplay").append(buttonContainer);
                         });
-                        $("#buttonDisplay").append(divRow + "</div>");
+                        
                         deleteAndEditIcons();
                         
                         //Edit modal for the category view
@@ -106,6 +97,7 @@
                                     button.parent().parent().find('.card-header').data('accounttype',modal.find('.modal-body input').val());
                                     button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
                                 }
+                                $("#editAccountTypeSubmitButton").off( 'click' );
                             });
                         });
                     });
@@ -129,12 +121,32 @@
                     $("#display").load("accountDetails.html", function(){
                         var template = $("template").html();
                         $.each(accountsJSON, function(index, element){
-                            $.each(element, function(key, value){
-                                var templateComplete = Mustache.render(template, {value:value, key:key});
+                            $.each(element.account.accountDetails, function(key, value){
+                                var templateComplete = Mustache.render(template, {value:value, key:key, category: element.category, accountType: element.accountType, userName: element.account.accountDetails.userName});
                                 $("#buttonDisplay").append(templateComplete);
                             });
                         });
                         deleteAndEditIcons();
+                        
+                        //Edit modal for the category view
+                        $('#editModal').on('show.bs.modal', function(event){
+                            var button = $(event.relatedTarget) // Button that triggered the modal
+                            var field = button.data('field') // Extract info from data-* attributes
+                            var fieldValue = button.data('fieldvalue')
+                            var modal = $(this)
+                            modal.find('.modal-title').text('Edit account ' + field)
+                            modal.find('.modal-body input').val(fieldValue)
+
+                            //Do a submit event
+                            $("#editCategorySubmitButton").click(function(){
+                                var success = accountController.editAccount(button.data('category'), button.data('accounttype'), button.data('username'), button.data('field'), button.data('fieldvalue'), modal.find('.modal-body input').val())
+                                if(success){
+                                    button.data('fieldvalue',modal.find('.modal-body input').val())
+                                    button.parent().parent().find('.fieldValueDisplay').html(modal.find('.modal-body input').val());
+                                }
+                                $("#editCategorySubmitButton").off( 'click' );
+                            });
+                        });
                     });
                 });
                 
@@ -146,11 +158,18 @@
                 // Delete and Edit button
                 function deleteAndEditIcons(){
                     $(".delete-icon").html("<img class='img-fluid' src='scripts/delete.png'>");
+                    $(".edit-icon").html("<img class='img-fluid' src='scripts/edit.png'>");
                 
                     $(".delete-icon").hover(function(){
                         $(this).html("<img class='img-fluid' src='scripts/deletewhite.png'>");
                     },function(){
                         $(this).html("<img class='img-fluid' src='scripts/delete.png'>");
+                    });
+                    
+                    $(".edit-icon").hover(function(){
+                        $(this).html("<img class='img-fluid' src='scripts/editwhite.png'>");
+                    },function(){
+                        $(this).html("<img class='img-fluid' src='scripts/edit.png'>");
                     });
                 }
              });

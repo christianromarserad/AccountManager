@@ -5,12 +5,13 @@
                 <h1 class="align-self-center">{{category}}</h1>
             </a>
             <div class="card-body d-flex flex-row justify-content-center" style="height:4rem">
-                <a style="height:2rem;width:2rem" class="btn-circle delete-icon d-flex flex-row justify-content-center" href="#" data-toggle="modal" data-target="#editModal" data-category="{{category}}"></a>
+                <a style="height:2rem;width:2rem" class="btn-circle edit-icon d-flex flex-row justify-content-center" href="#" data-toggle="modal" data-target="#editModal" data-category="{{category}}"></a>
+                <a style="height:2rem;width:2rem" class="btn-circle delete-icon d-flex flex-row justify-content-center deleteCategoryButton" href="#" data-category="{{category}}"></a>
             </div>
         </div>
     </template>
     <h1>Categories</h1>
-    <div id="buttonDisplay"></div>
+    <div id="buttonDisplay" class="row"></div>
     
     
     <!--Edit Modal-->

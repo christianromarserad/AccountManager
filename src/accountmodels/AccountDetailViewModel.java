@@ -7,8 +7,7 @@ package accountmodels;
 public class AccountDetailViewModel {
     private String category;
     private String accountType;
-    private String username; 
-    private String password;
+    private Account account;
     
     public String getCategory(){
         return category;
@@ -18,12 +17,8 @@ public class AccountDetailViewModel {
         return accountType;
     }
     
-    public String getUsername(){
-        return username;
-    }
-    
-    public String getPassword(){
-        return password;
+    public Account getAccount(){
+        return account;
     }
     
     public void setCategory(String category){
@@ -34,11 +29,7 @@ public class AccountDetailViewModel {
         this.accountType = accountType;
     }
     
-    public void setUsername(String username){
-        this.username = username;
-    }
-    
-    public void setPassword(String password){
-        this.password = password;
+    public void setAccount(Account account){
+        this.account = account;
     }
 }
