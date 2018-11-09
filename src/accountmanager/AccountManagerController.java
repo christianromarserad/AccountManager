@@ -221,7 +221,7 @@ public class AccountManagerController {
         for(AccountCategory category: allAccounts){
             if(category.getCategory().equals(categoryName)){
                 for(int i = 0; i < category.getAccountTypes().size(); i++){
-                    if(category.getAccountTypes().get(i).equals(accountTypeName)){
+                    if(category.getAccountTypes().get(i).getAccountType().equals(accountTypeName)){
                         category.getAccountTypes().remove(i);
                         break;
                     }
