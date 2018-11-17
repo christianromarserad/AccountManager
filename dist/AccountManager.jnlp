@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="AccountManager.jar" size="733315" download="eager" />
+    <jar href="AccountManager.jar" size="733321" download="eager" />
     <jar href="lib\gson-2.6.2-javadoc.jar" size="260989" download="eager" />
     <jar href="lib\gson-2.6.2-sources.jar" size="145435" download="eager" />
     <jar href="lib\gson-2.6.2.jar" size="229650" download="eager" />

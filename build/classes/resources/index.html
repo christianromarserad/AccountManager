@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Account Manager</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="scripts/jQuery.js"></script>
@@ -27,49 +27,52 @@
         </style>
         <script>
             $(document).ready(function(){
-                //Load the category view first
-                var accountsJSON = JSON.parse(accountController.getCategoryViewModel());
-                $("#display").load("categories.html", function(){
-                    var template = $("template").html();
-                    accountsJSON.forEach(function(data){
-                        var button = Mustache.render(template, data);
-                        var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
-                        $("#buttonDisplay").append(buttonContainer);
-                    });
+                var previousPages = [];
+                var pageCount = 0;
+            
+                // This function will render the category view
+                function renderCategoryView(accountsJSON){
+                    $("#display").load("categories.html", function(){
+                        var template = $("template").html();
+                        accountsJSON.forEach(function(data){
+                            var button = Mustache.render(template, data);
+                            var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
+                            $("#buttonDisplay").append(buttonContainer);
+                        });
                     
-                    deleteAndEditIcons();
+                        deleteAndEditIcons();
                     
-                    //Delete event
-                    $(".deleteCategoryButton").click(function(){
-                        accountController.deleteCategory($(this).data("category"));
-                        $(this).parent().parent().parent().remove();
-                    });
+                        //Delete event
+                        $(".deleteCategoryButton").click(function(){
+                            accountController.deleteCategory($(this).data("category"));
+                            $(this).parent().parent().parent().remove();
+                        });
                     
-                    //Edit modal for the category view
-                    $('#editModal').on('show.bs.modal', function(event){                    
-                        var button = $(event.relatedTarget) // Button that triggered the modal
-                        var category = button.data('category') // Extract info from data-* attributes
-                        var modal = $("#editModal");
-                        modal.find('.modal-title').text('Edit ' + category + ' category')
-                        modal.find('.modal-body input').val(category)
+                        //Edit modal for the category view
+                        $('#editModal').on('show.bs.modal', function(event){                    
+                            var button = $(event.relatedTarget) // Button that triggered the modal
+                            var category = button.data('category') // Extract info from data-* attributes
+                            var modal = $("#editModal");
+                            modal.find('.modal-title').text('Edit ' + category + ' category')
+                            modal.find('.modal-body input').val(category)
 
-                        //Do a submit event
-                        $("#editCategorySubmitButton").click(function(){
-                            var success = accountController.editCategory(button.data('category'), modal.find('.modal-body input').val())
-                            if(success){
-                                //Rerender the category button with its new category name
-                                button.data('category',modal.find('.modal-body input').val())
-                                button.parent().parent().find('.card-header').data('category',modal.find('.modal-body input').val());
-                                button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
-                            }
-                            $("#editCategorySubmitButton").off( 'click' );
+                            //Do a submit event
+                            $("#editCategorySubmitButton").click(function(){
+                                var success = accountController.editCategory(button.data('category'), modal.find('.modal-body input').val())
+                                if(success){
+                                    //Rerender the category button with its new category name
+                                    button.data('category',modal.find('.modal-body input').val())
+                                    button.parent().parent().find('.card-header').data('category',modal.find('.modal-body input').val());
+                                    button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
+                                }
+                                $("#editCategorySubmitButton").off( 'click' );
+                            });
                         });
                     });
-                });
+                }
                 
-                //Load account type view when category is clicked
-                $('#display').on('click', '.category-button', function() {
-                    var accountsJSON = JSON.parse(accountController.getAccountTypeViewModel($(this).data("category")));
+                // This function will render the account type view
+                function renderAccountTypeView(accountsJSON){
                     $("#display").load("accountTypes.html", function(){
                         var template = $("template").html();
                         $.each(accountsJSON, function(key, value){
@@ -107,11 +110,10 @@
                             });
                         });
                     });
-                });
+                }
                 
-                //Load accounts when account types is clicked
-                $('#display').on('click', '.account-type-button', function() {
-                    var accountsJSON = JSON.parse(accountController.getAccountViewModel($(this).data("category"),$(this).data("accounttype")));     
+                // This function will render the account view
+                function renderAccountView(accountsJSON){
                     $("#display").load("accounts.html", function(){
                         var template = $("template").html();
                         $.each(accountsJSON, function(key, value){
@@ -119,11 +121,10 @@
                             $("#buttonDisplay").append(templateComplete);
                         });
                     });
-                });
+                }
                 
-                //Display the account details view when an account is clicked
-                $('#display').on('click', '.user-name-button', function() {
-                    var accountsJSON = JSON.parse(accountController.getAccountDetailsViewModel($(this).data("category"), $(this).data("accounttype"), $(this).data("username")));     
+                // This function will render the account details view
+                function renderAccountDetailsView(accountsJSON){
                     $("#display").load("accountDetails.html", function(){
                         var template = $("template").html();
                         $.each(accountsJSON, function(index, element){
@@ -160,10 +161,75 @@
                             });
                         });
                     });
+                }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                // Load the category view
+                var accountsJSON = JSON.parse(accountController.getCategoryViewModel());
+                renderCategoryView(accountsJSON);
+                previousPages.push({method: renderCategoryView, data: accountsJSON});
+                
+                // Load account type view when category is clicked
+                $('#display').on('click', '.category-button', function() {
+                    var accountsJSON = JSON.parse(accountController.getAccountTypeViewModel($(this).data("category")));
+                    renderAccountTypeView(accountsJSON);
+                    pageCount++;
+                    previousPages.splice(pageCount, previousPages.length - 1);
+                    previousPages.push({method: renderAccountTypeView, data: accountsJSON});
                 });
                 
+                // Load account view when account types is clicked
+                $('#display').on('click', '.account-type-button', function() {
+                    var accountsJSON = JSON.parse(accountController.getAccountViewModel($(this).data("category"),$(this).data("accounttype")));     
+                    renderAccountView(accountsJSON);
+                    pageCount++;
+                    previousPages.splice(pageCount, previousPages.length - 1);
+                    previousPages.push({method: renderAccountView, data: accountsJSON});
+                });
                 
+                // Load account details view when an account is clicked
+                $('#display').on('click', '.user-name-button', function() {
+                    var accountsJSON = JSON.parse(accountController.getAccountDetailsViewModel($(this).data("category"), $(this).data("accounttype"), $(this).data("username")));     
+                    renderAccountDetailsView(accountsJSON);
+                    pageCount++;
+                    previousPages.splice(pageCount, previousPages.length - 1);
+                    previousPages.push({method: renderAccountDetailsView, data: accountsJSON});
+                });
                 
+
+                $("#back").click(function(){
+                    if(pageCount > 0){
+                        previousPages[pageCount - 1].method(previousPages[pageCount - 1].data);
+                        pageCount--;
+                    }
+                });
+                
+                $("#forward").click(function(){
+                    if(pageCount < 3){
+                        previousPages[pageCount + 1].method(previousPages[pageCount + 1].data);
+                        pageCount++;
+                    }
+                });
                 
                 
                 
@@ -188,19 +254,7 @@
         </script>
     </head>
     <body>   
-        <!--
-            <div class="row">
-                <div class="card">
-                                 <div class="card-header d-flex flex-row justify-content-center" style="width:20rem;height:15rem">
-                        <h1 class="align-self-center">Download</h1>
-                    </div>
-                    <div class="card-body d-flex flex-row justify-content-center" style="height:4rem">
-                        <a style="height:2rem;width:2rem" class="btn-circle d-flex flex-row justify-content-center" href="#"><img class="delete-icon img-fluid" src=""></a>
-                    </div>
-                </div>
-            </div>
-        -->
-        <button id="click">click</button>    
+        <div><button id="back">back</button><button id="forward">forward</button></div>
         <div id="display"></div>
         <div id="debug"></div>
     </body>
