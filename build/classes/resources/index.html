@@ -132,7 +132,12 @@
                                 var templateComplete = Mustache.render(template, {value:value, key:key, category: element.category, accountType: element.accountType, userName: element.account.accountDetails.userName});
                                 $("#buttonDisplay").append(templateComplete);
                             });
+                            
+                            $("#addFieldButton").data("category", element.category);
+                            $("#addFieldButton").data("accounttype", element.accountType);
+                            $("#addFieldButton").data("username", element.account.accountDetails.userName);
                         });
+                        
                         deleteAndEditIcons();
                         
                         //Delete event
@@ -141,7 +146,7 @@
                             $(this).parent().parent().parent().remove();
                         });
                         
-                        //Edit modal for the category view
+                        //Edit modal event
                         $('#editModal').on('show.bs.modal', function(event){
                             var button = $(event.relatedTarget) // Button that triggered the modal
                             var field = button.data('field') // Extract info from data-* attributes
@@ -156,6 +161,32 @@
                                 if(success){
                                     button.data('fieldvalue',modal.find('.modal-body input').val())
                                     button.parent().parent().find('.fieldValueDisplay').html(modal.find('.modal-body input').val());
+                                }
+                                $("#editCategorySubmitButton").off( 'click' );
+                            });
+                        });
+                        
+                        //Add Field modal event
+                        $('#addFieldModal').on('show.bs.modal', function(event){
+                            var button = $(event.relatedTarget) // Button that triggered the modal
+                            var modal = $(this)
+
+                            //Do a submit event
+                            $("#addFieldSubmitButton").click(function(){
+                                var success = accountController.addAccountField(button.data('category'), button.data('accounttype'), button.data('username'), modal.find('#fieldName').val(), modal.find('#fieldValue').val())
+                                if(success){
+                                    var template = $("template").html();
+                                    $.each(accountsJSON, function(index, element){
+                                        var templateComplete = Mustache.render(template, {
+                                            value: modal.find('#fieldValue').val(), 
+                                            key: modal.find('#fieldName').val(), 
+                                            category: button.data('category'), 
+                                            accountType: button.data('accounttype'), 
+                                            userName: button.data('username')
+                                        });
+                                        $("#buttonDisplay").append(templateComplete);
+                                    });
+                                    deleteAndEditIcons();
                                 }
                                 $("#editCategorySubmitButton").off( 'click' );
                             });

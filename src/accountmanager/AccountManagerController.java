@@ -261,4 +261,31 @@ public class AccountManagerController {
         
         //Not fully implemented
     }
+    
+    public boolean addAccountField(String categoryName, String accountTypeName, String username, String field, String value) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category: allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                for(AccountType accountType: category.getAccountTypes()){
+                    if(accountType.getAccountType().equals(accountTypeName)){
+                        for(Account account: accountType.getAccounts()){
+                            if(account.get("userName").equals(username)){
+                                System.out.println("it works!!");
+                                account.set(field, value);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        return true;
+    }
 }
