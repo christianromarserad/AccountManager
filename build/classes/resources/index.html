@@ -138,7 +138,7 @@
                         //Delete event
                         $(".deleteAccountDetailButton").click(function(){
                             accountController.deleteAccountDetail($(this).data("category"), $(this).data("accounttype"), $(this).data("username"), $(this).data("field"));
-                            $(this).parent().parent().remove();
+                            $(this).parent().parent().parent().remove();
                         });
                         
                         //Edit modal for the category view
@@ -187,46 +187,55 @@
                 // Load the category view
                 var accountsJSON = JSON.parse(accountController.getCategoryViewModel());
                 renderCategoryView(accountsJSON);
-                previousPages.push({method: renderCategoryView, data: accountsJSON});
+                previousPages.push({method: renderCategoryView, data: function(){ return JSON.parse(accountController.getCategoryViewModel()); }});
                 
                 // Load account type view when category is clicked
                 $('#display').on('click', '.category-button', function() {
+                    function getJSON(category){
+                        return JSON.parse(accountController.getAccountTypeViewModel(category));
+                    }
                     var accountsJSON = JSON.parse(accountController.getAccountTypeViewModel($(this).data("category")));
                     renderAccountTypeView(accountsJSON);
                     pageCount++;
                     previousPages.splice(pageCount, previousPages.length - 1);
-                    previousPages.push({method: renderAccountTypeView, data: accountsJSON});
+                    previousPages.push({method: renderAccountTypeView, data: getJSON.bind(this,$(this).data("category"))});
                 });
                 
                 // Load account view when account types is clicked
                 $('#display').on('click', '.account-type-button', function() {
+                    function getJSON(category, accounttype){
+                        return JSON.parse(accountController.getAccountViewModel(category,accounttype)); 
+                    }
                     var accountsJSON = JSON.parse(accountController.getAccountViewModel($(this).data("category"),$(this).data("accounttype")));     
                     renderAccountView(accountsJSON);
                     pageCount++;
                     previousPages.splice(pageCount, previousPages.length - 1);
-                    previousPages.push({method: renderAccountView, data: accountsJSON});
+                    previousPages.push({method: renderAccountView, data: getJSON.bind(this,$(this).data("category"), $(this).data("accounttype"))});
                 });
                 
                 // Load account details view when an account is clicked
                 $('#display').on('click', '.user-name-button', function() {
+                    function getJSON(category, accounttype, username){
+                        return JSON.parse(accountController.getAccountDetailsViewModel(category, accounttype, username));
+                    }
                     var accountsJSON = JSON.parse(accountController.getAccountDetailsViewModel($(this).data("category"), $(this).data("accounttype"), $(this).data("username")));     
                     renderAccountDetailsView(accountsJSON);
                     pageCount++;
                     previousPages.splice(pageCount, previousPages.length - 1);
-                    previousPages.push({method: renderAccountDetailsView, data: accountsJSON});
+                    previousPages.push({method: renderAccountDetailsView, data: getJSON.bind(this,$(this).data("category"), $(this).data("accounttype"), $(this).data("username"))});
                 });
                 
 
                 $("#back").click(function(){
                     if(pageCount > 0){
-                        previousPages[pageCount - 1].method(previousPages[pageCount - 1].data);
+                        previousPages[pageCount - 1].method(previousPages[pageCount - 1].data());
                         pageCount--;
                     }
                 });
                 
                 $("#forward").click(function(){
                     if(pageCount < 3){
-                        previousPages[pageCount + 1].method(previousPages[pageCount + 1].data);
+                        previousPages[pageCount + 1].method(previousPages[pageCount + 1].data());
                         pageCount++;
                     }
                 });
