@@ -1,8 +1,16 @@
-<div>
+<div>  
     <template>
-        <div>
-            <button class="btn btn-primary user-name-button" data-category="{{category}}" data-accounttype="{{accountType}}" data-username="{{userName}}">{{userName}}</button>                                         
-        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <span>{{userName}}</span> 
+            </div>
+            <div class="col-sm-6">
+                <div class="card-body d-flex flex-row justify-content-center">
+                    <a style="height:2rem;width:2rem" class="col-sm-1 btn-circle edit-icon d-flex flex-row justify-content-center user-name-button" href="#"  data-category="{{category}}" data-accounttype="{{accountType}}" data-username="{{userName}}"></a>
+                    <a style="height:2rem;width:2rem" class="col-sm-1 btn-circle delete-icon d-flex flex-row justify-content-center" href="#" data-category="{{category}}" data-accounttype="{{accountType}}" data-username="{{userName}}"></a>
+                </div>
+            </div>
+        </div>      
     </template>
     <h1>Accounts</h1>
     <div id="buttonDisplay"></div>
