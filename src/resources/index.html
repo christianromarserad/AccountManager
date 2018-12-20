@@ -41,14 +41,14 @@
                         });
                     
                         deleteAndEditIcons();
-                    
+                        
                         //Delete event
-                        $(".deleteCategoryButton").click(function(){
+                        $("#display").on('click', '.deleteCategoryButton', function(){
                             accountController.deleteCategory($(this).data("category"));
                             $(this).parent().parent().parent().remove();
                         });
                     
-                        //Edit modal for the category view
+                        //Edit category modal event
                         $('#editModal').on('show.bs.modal', function(event){                    
                             var button = $(event.relatedTarget) // Button that triggered the modal
                             var category = button.data('category') // Extract info from data-* attributes
@@ -66,6 +66,27 @@
                                     button.parent().parent().find('h1').html(modal.find('.modal-body input').val()); 
                                 }
                                 $("#editCategorySubmitButton").off( 'click' );
+                            });
+                        });
+                        
+                        //Add category modal event
+                        $('#addCategoryModal').on('show.bs.modal', function(event){
+                            var button = $(event.relatedTarget) // Button that triggered the modal
+                            var modal = $(this)
+
+                            //Do a submit event
+                            $("#addCategorySubmitButton").click(function(){
+                                var success = accountController.addCategory(modal.find('#categoryName').val())
+                                if(success){
+                                    var template = $("template").html();
+                                    var button = Mustache.render(template, {
+                                        category: modal.find('#categoryName').val()
+                                    });
+                                    var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
+                                    $("#buttonDisplay").append(buttonContainer);
+                                    deleteAndEditIcons();
+                                }
+                                $("#addCategorySubmitButton").off( 'click' );
                             });
                         });
                     });
@@ -196,7 +217,7 @@
                                     });
                                     deleteAndEditIcons();
                                 }
-                                $("#editCategorySubmitButton").off( 'click' );
+                                $("#addFieldSubmitButton").off( 'click' );
                             });
                         });
                     });
