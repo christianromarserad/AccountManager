@@ -236,6 +236,32 @@ public class AccountManagerController {
         //Not fully implemented
     }
     
+    public void deleteAccount(String categoryName, String accountTypeName, String username) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category: allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                for(AccountType accountType: category.getAccountTypes()){
+                    if(accountType.getAccountType().equals(accountTypeName)){
+                        for(int i = 0; i < accountType.getAccounts().size(); i++){
+                            if(accountType.getAccounts().get(i).get("userName").equals(username)){
+                                accountType.getAccounts().remove(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        //Not fully implemented
+    }
+    
     public void deleteAccountDetail(String categoryName, String accountTypeName, String username, String field) throws URISyntaxException, FileNotFoundException, IOException{
         List<AccountCategory> allAccounts = getAccounts();
         Gson gson = new Gson();

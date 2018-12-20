@@ -122,6 +122,12 @@
                         });
                         
                         deleteAndEditIcons();
+                        
+                        //Delete event
+                        $(".deleteAccountButton").click(function(){
+                            accountController.deleteAccount($(this).data("category"), $(this).data("accounttype"), $(this).data("username"));
+                            $(this).parent().parent().parent().remove();
+                        });
                     });
                 }
                 

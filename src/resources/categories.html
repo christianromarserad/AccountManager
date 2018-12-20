@@ -10,7 +10,14 @@
             </div>
         </div>
     </template>
-    <h1>Categories</h1>
+    <div class="row">
+        <div class="col-sm-5">
+            <h1>Categories</h1>
+        </div>
+        <div class="col-sm-7">
+            <button id="addFieldButton" data-toggle="modal" data-target="#addFieldModal" data-category="{{category}}" data-accounttype="{{accountType}}" data-username="{{userName}}">Add Field</button>
+        </div>
+    </div>
     <div id="buttonDisplay" class="row"></div>
     
     
