@@ -1,5 +1,6 @@
 package accountmodels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,11 @@ import java.util.List;
 public class AccountType {
     private String accountType;
     private List<Account> accounts;
+    
+    public AccountType(String accountType){
+        this.accountType = accountType;
+        accounts = new ArrayList<Account>();
+    }
     
     public String getAccountType(){
         return accountType;

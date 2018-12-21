@@ -318,8 +318,24 @@ public class AccountManagerController {
     public boolean addCategory(String categoryName) throws URISyntaxException, FileNotFoundException, IOException{
         List<AccountCategory> allAccounts = getAccounts();
         Gson gson = new Gson();
-        
         allAccounts.add(new AccountCategory(categoryName));
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        return true;
+    }
+    
+    public boolean addAccountType(String categoryName, String accountTypeName) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category: allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                category.getAccountTypes().add(new AccountType(accountTypeName));
+            }
+        }
 
         FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
         gson.toJson(allAccounts, writer);

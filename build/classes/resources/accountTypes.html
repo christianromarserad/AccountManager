@@ -10,7 +10,14 @@
             </div>
         </div>
     </template>
-    <h1>Account Types</h1>
+    <div class="row">
+        <div class="col-sm-5">
+            <h1>Account Types</h1>
+        </div>
+        <div class="col-sm-7">
+            <button id="addAccountTypeButton" data-toggle="modal" data-target="#addAccountTypeModal" data-category="{{category}}">Add Account Type</button>
+        </div>
+    </div>
     <div id="buttonDisplay" class="row"></div>
     
     
@@ -32,6 +39,30 @@
                   </div>
                   <div class="modal-footer">
                       <button id="editAccountTypeSubmitButton" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--Add category Modal-->
+    <div class="modal fade" id="addAccountTypeModal" tabindex="-1" role="dialog" aria-labelledby="addAccountTypeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title pull-left" id="addCategoryModalLabel">Create Account Type</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  </div>
+                  <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                            <label for="accountTypeName" class="control-label">Account Type Name</label>
+                            <input type="text" class="form-control" id="accountTypeName">
+                        </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button id="addAccountTypeSubmitButton" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
             </div>
