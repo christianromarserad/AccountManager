@@ -139,8 +139,6 @@
                             var button = $(event.relatedTarget) // Button that triggered the modal
                             var modal = $(this)
                             
-                            
-
                             //Do a submit event
                             $("#addAccountTypeSubmitButton").click(function(){
                                 var success = accountController.addAccountType($("#addAccountTypeButton").data("category"), modal.find('#accountTypeName').val())
@@ -166,12 +164,35 @@
                             $("#buttonDisplay").append(templateComplete);
                         });
                         
+                        if(accountsJSON.length != 0){
+                            $("#addAccountButton").data("category", accountsJSON[0].category);
+                            $("#addAccountButton").data("accounttype", accountsJSON[0].accountType);
+                        }
+                        
                         deleteAndEditIcons();
                         
                         //Delete event
                         $(".deleteAccountButton").click(function(){
                             accountController.deleteAccount($(this).data("category"), $(this).data("accounttype"), $(this).data("username"));
                             $(this).parent().parent().parent().remove();
+                        });
+                        
+                        //Add account type modal event
+                        $('#addAccountModal').on('show.bs.modal', function(event){
+                            var button = $(event.relatedTarget) // Button that triggered the modal
+                            var modal = $(this)
+                            
+                            //Do a submit event
+                            $("#addAccountSubmitButton").click(function(){
+                                var success = accountController.addAccount($("#addAccountButton").data("category"), $("#addAccountButton").data("accounttype"), modal.find('#accountName').val())
+                                if(success){
+                                    var template = $("template").html();
+                                    var templateComplete = Mustache.render(template, {category: $("#addAccountButton").data("category"), accountType: $("#addAccountButton").data("accounttype"), userName: modal.find('#accountName').val()});
+                                    $("#buttonDisplay").append(templateComplete);
+                                    deleteAndEditIcons();
+                                }
+                                $("#addAccountSubmitButton").off( 'click' );
+                            });
                         });
                     });
                 }

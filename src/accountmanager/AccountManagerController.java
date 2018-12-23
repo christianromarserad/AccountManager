@@ -334,6 +334,29 @@ public class AccountManagerController {
         for(AccountCategory category: allAccounts){
             if(category.getCategory().equals(categoryName)){
                 category.getAccountTypes().add(new AccountType(accountTypeName));
+                break;
+            }
+        }
+
+        FileWriter writer = new FileWriter(Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString() + "/accounts.json");
+        gson.toJson(allAccounts, writer);
+        writer.close();
+        
+        return true;
+    }
+    
+    public boolean addAccount(String categoryName, String accountTypeName, String username) throws URISyntaxException, FileNotFoundException, IOException{
+        List<AccountCategory> allAccounts = getAccounts();
+        Gson gson = new Gson();
+        
+        for(AccountCategory category: allAccounts){
+            if(category.getCategory().equals(categoryName)){
+                for(AccountType accountType: category.getAccountTypes()){
+                    if(accountType.getAccountType().equals(accountTypeName)){
+                        accountType.getAccounts().add(new Account(username));
+                        break;
+                    }
+                }
             }
         }
 

@@ -9,6 +9,10 @@ import java.util.HashMap;
 public class Account {
     private HashMap<String, String> accountDetails = new HashMap<String, String>();
     
+    public Account(String userName){
+        accountDetails.put("userName",userName);
+    }
+    
     public String get(String field){
         return accountDetails.get(field);
     }
