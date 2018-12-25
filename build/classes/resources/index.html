@@ -268,27 +268,8 @@
                     });
                 }
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+                
                 // Load the category view
                 var accountsJSON = JSON.parse(accountController.getCategoryViewModel());
                 renderCategoryView(accountsJSON);
@@ -347,10 +328,12 @@
                 
                 
                 
-                // Delete and Edit button
+                // Delete and Edit button               
                 function deleteAndEditIcons(){
                     $(".delete-icon").html("<img class='img-fluid' src='scripts/delete.png'>");
                     $(".edit-icon").html("<img class='img-fluid' src='scripts/edit.png'>");
+                    $(".arrow-right-icon").html("<img class='img-fluid' src='scripts/arrowright.png'>");
+                    $(".arrow-left-icon").html("<img class='img-fluid' src='scripts/arrowleft.png'>");
                 
                     $(".delete-icon").hover(function(){
                         $(this).html("<img class='img-fluid' src='scripts/deletewhite.png'>");
@@ -368,7 +351,7 @@
         </script>
     </head>
     <body>   
-        <div><button id="back">back</button><button id="forward">forward</button></div>
+        <div><a id="back" class="btn-circle arrow-left-icon d-flex flex-row justify-content-center"></a><a id="forward" class="btn-circle arrow-right-icon d-flex flex-row justify-content-center">forward</a></div>
         <div id="debug"></div>
         <div id="display"></div>
     </body>
