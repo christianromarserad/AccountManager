@@ -48,7 +48,7 @@ public class AccountManager extends Application {
         
         Scene scene = new Scene(browser, 880, 500);
         
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Account Manager");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
