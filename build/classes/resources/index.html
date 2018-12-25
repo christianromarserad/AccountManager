@@ -346,12 +346,27 @@
                     },function(){
                         $(this).html("<img class='img-fluid' src='scripts/edit.png'>");
                     });
+                    
+                    $(".arrow-right-icon").hover(function(){
+                        $(this).html("<img class='img-fluid' src='scripts/arrowrightwhite.png'>");
+                    },function(){
+                        $(this).html("<img class='img-fluid' src='scripts/arrowright.png'>");
+                    });
+                    
+                    $(".arrow-left-icon").hover(function(){
+                        $(this).html("<img class='img-fluid' src='scripts/arrowleftwhite.png'>");
+                    },function(){
+                        $(this).html("<img class='img-fluid' src='scripts/arrowleft.png'>");
+                    });
                 }
              });
         </script>
     </head>
     <body>   
-        <div><a id="back" class="btn-circle arrow-left-icon d-flex flex-row justify-content-center"></a><a id="forward" class="btn-circle arrow-right-icon d-flex flex-row justify-content-center">forward</a></div>
+        <div class="card-body d-flex flex-row justify-content-center">
+            <a id="back" style="height:2rem;width:0.5rem" class="col-sm-1 btn-circle arrow-left-icon d-flex flex-row justify-content-center" href="#"></a>
+            <a id="forward" style="height:2rem;width:0.5rem" class="col-sm-1 btn-circle arrow-right-icon d-flex flex-row justify-content-center" href="#"></a>
+        </div>
         <div id="debug"></div>
         <div id="display"></div>
     </body>
