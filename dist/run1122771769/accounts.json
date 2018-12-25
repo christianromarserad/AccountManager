@@ -1,0 +1,123 @@
+[
+    {
+        "category": "Email",
+        "accountTypes": [
+            {
+                "accountType": "Google",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "random": "information",
+                            "password": "password",
+                            "security question answer": "answer",
+                            "userName": "christianserad@gmail.com",
+                            "security question answer2": "secret answer"
+                        }
+                    },
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "romarserad@gmail.com"
+                        }
+                    }
+                ]
+            },
+            {
+                "accountType": "Yahoo",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@yahoo.com"
+                        }
+                    }
+                ]
+            },
+            {
+                "accountType": "Outlook",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@outlook.com"
+                        }
+                    }
+                ]
+            },
+            {
+                "accountType": "CustomEmail",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@customemail.com"
+                        }
+                    }
+                ]
+            },
+            {
+                "accountType": "AOL",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@aol.com"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category": "Shopping",
+        "accountTypes": [
+            {
+                "accountType": "Amazon",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@gmail.com"
+                        }
+                    }
+                ]
+            },
+            {
+                "accountType": "ebay",
+                "accounts": []
+            }
+        ]
+    },
+    {
+        "category": "School",
+        "accountTypes": [
+            {
+                "accountType": "Highschool",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@gmail.com"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "category": "Other",
+        "accountTypes": [
+            {
+                "accountType": "Quora",
+                "accounts": [
+                    {
+                        "accountDetails": {
+                            "password": "password",
+                            "userName": "christianserad@gmail.com"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

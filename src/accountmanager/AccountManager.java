@@ -33,10 +33,6 @@ public class AccountManager extends Application {
         WebEngine webEngine = browser.getEngine();
         URL urlHello = getClass().getResource("/resources/index.html");
         webEngine.load(urlHello.toExternalForm());
-//        
-//        AccountManagerController controller = new AccountManagerController();
-//        controller.editCategory("Social", "Sosyal");
-        
         
         String path = Paths.get(AccountManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().getParent().toString();
         System.out.println(path);
