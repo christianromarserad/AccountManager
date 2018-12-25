@@ -24,6 +24,12 @@
                 border-color: gray;
                 border-width: 1px;
             }
+            .item{
+                margin-bottom: 30px;
+            }
+            #display{
+                margin: 20px 20px 0px 20px;
+            }
         </style>
         <script>
             $(document).ready(function(){
@@ -36,7 +42,7 @@
                         var template = $("template").html();
                         accountsJSON.forEach(function(data){
                             var button = Mustache.render(template, data);
-                            var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
+                            var buttonContainer = "<div class='item col-sm-4'>" + button + "</div>"
                             $("#buttonDisplay").append(buttonContainer);
                         });
                     
@@ -98,7 +104,7 @@
                         var template = $("template").html();
                         $.each(accountsJSON, function(key, value){
                             var button = Mustache.render(template, value);
-                            var buttonContainer = "<div class='col-sm-4'>" + button + "</div>"
+                            var buttonContainer = "<div class='item col-sm-4'>" + button + "</div>"
                             $("#buttonDisplay").append(buttonContainer);
                         });
                         
